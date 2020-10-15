@@ -98,8 +98,7 @@ Plug 'maxmellon/vim-jsx-pretty'
 "Plug 'kangol/vim-pudb'
 "Plug 'honza/vim-snippets'
 
-" Java-completion
-Plug 'junegunn/vim-javacomplete2'
+
 call plug#end()
 
 "Enable tagbar on startup"
