@@ -1,4 +1,3 @@
-
 "for f in split(glob('~/.config/nvim/configs/*.vim'), '\n')
 "   exe 'source' f
 "endfor
@@ -41,6 +40,7 @@ call plug#begin('~/.vim/bundle')
 Plug 'jsfaint/coc-neoinclude'
 
 Plug 'dracula/vim', { 'as': 'dracula' }
+
 " Code completion
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -89,16 +89,17 @@ Plug 'pangloss/vim-javascript'
 Plug 'maxmellon/vim-jsx-pretty'
 
 "Autocomplete python"
-Plug 'Yggdroot/indentLine'
-Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2'
-Plug 'HansPinckaers/ncm2-jedi'
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-path'
-Plug 'kangol/vim-pudb'
-Plug 'honza/vim-snippets'
+"Plug 'Yggdroot/indentLine'
+"Plug 'roxma/nvim-yarp'
+"Plug 'ncm2/ncm2'
+"Plug 'HansPinckaers/ncm2-jedi'
+"Plug 'ncm2/ncm2-bufword'
+"Plug 'ncm2/ncm2-path'
+"Plug 'kangol/vim-pudb'
+"Plug 'honza/vim-snippets'
 
-
+" Java-completion
+Plug 'junegunn/vim-javacomplete2'
 call plug#end()
 
 "Enable tagbar on startup"
@@ -171,7 +172,6 @@ let g:ale_loclist = 0
 "g:ale_javascript_eslint_use_global = 1
 let g:ale_linters = {
       \  'cs':['syntax', 'semantic', 'issues'],
-      \  'python': ['pylint'],
       \  'java': ['javac']
       \ }
 " }}}
@@ -183,6 +183,8 @@ let g:deoplete#auto_complete_start_length = 2
 let g:deoplete#sources = {}
 let g:deoplete#sources._=['buffer', 'ultisnips', 'file', 'dictionary']
 let g:deoplete#sources.javascript = ['tern', 'omni', 'file', 'buffer', 'ultisnips']
+let g:deoplete#sources.java = ['jc', 'javacomplete2', 'file', 'buffer', 'ultisnips']
+
 
 " Use smartcase.
 let g:deoplete#enable_smart_case = 1
@@ -224,10 +226,17 @@ autocmd FileType java setlocal omnifunc=javacomplete#Complete
 autocmd FileType java JCEnable
 " }}}
 
+" Open when no files were speficied on vim launch
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" Toggle nerdtree
+map <C-n> :NERDTreeToggle<CR>
+
 "***PYTHON SETUP***
-let g:jedi#completions_enabled = 0
-let g:jedi#use_splits_not_buffers = "right"
-let g:indentLine_enabled = 0
+"let g:jedi#completions_enabled = 0
+"let g:jedi#use_splits_not_buffers = "right"
+"let g:indentLine_enabled = 0
 
 "====== COC-NVIM ======
 let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-css', 'coc-json']
@@ -270,11 +279,8 @@ colorscheme dracula
 set hidden
 
 let g:LanguageClient_serverCommands = {
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
     \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
     \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
-    \ 'python': ['/usr/local/bin/pyls'],
-    \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
     \ }
     
 let g:airline#extensions#tabline#enabled = 1
